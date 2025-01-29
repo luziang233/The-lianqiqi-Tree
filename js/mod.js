@@ -1,5 +1,6 @@
 let modInfo = {
 	name: "史上最强炼气期树",
+	id: "sszqlqq",
 	author: "luziang",
 	pointsName: "灵气",
 	modFiles: ["layers.js", "tree.js"],
@@ -42,6 +43,8 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('lq', 11)) gain = gain.times(2)
+	if (hasUpgrade('lq', 12)) gain = gain.times(upgradeEffect('lq', 12))
 	return gain
 }
 
