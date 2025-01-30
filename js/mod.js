@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "史上最强炼气期树",
-	id: "sszqlqq",
+	name: "放置群友树",
+	id: "fzqys",
 	author: "luziang",
-	pointsName: "灵气",
+	pointsName: "放置时间",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -41,10 +41,8 @@ function canGenPoints(){
 function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
-
 	let gain = new Decimal(1)
-	if (hasUpgrade('lq', 11)) gain = gain.times(2)
-	if (hasUpgrade('lq', 12)) gain = gain.times(upgradeEffect('lq', 12))
+	if (hasUpgrade('fz', 11)) gain = gain.times(114514)
 	return gain
 }
 
@@ -54,6 +52,7 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+	"当前版本终局：1夜落",
 ]
 
 // Determines when the game "ends"
