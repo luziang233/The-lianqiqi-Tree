@@ -101,25 +101,20 @@ addLayer("dr", {
         {key: "dr", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     upgrades: {
-        11: {
-            title: "什么，已经十万层了？",
-            description: "开始无敌之路",
-            cost: new Decimal(0),
-        },
+        
     },
     milestones: {
-        0: {
-            requirementDescription: "炼气期三十万层",
-            done() { return player[this.layer].points.gte(3e5)},
-            effectDescription:"灵气获得X2",
-        },
+        
     },
     bars: {
         bigBar: {
             direction: LEFT,
-            width: 200,
+            width: 600,
             height: 50,
-            fillStyle: {
+            fillStyle:{
+                "background-color": "#dd6e78",
+            },
+            baseStyle: {
                 "background-color": "#dc143c",
             },
             progress() {
@@ -135,14 +130,13 @@ addLayer("dr", {
     },
     tabFormat: [
         ["display-text",function() { return '你已经击杀了 ' + format(player[this.layer].points) + ' 个敌人!' }, { "color": "red", "font-size": "26px", "font-family": "Comic Sans MS" }],
-        "prestige-button",
+        "blank","blank",
         ["row", [["bar", "bigBar"]]],
         "blank",
         "blank",
-        "upgrades",
         "blank",
         "blank",
-        "milestones",
+        
     ],
     layerShown(){return true}
 })
