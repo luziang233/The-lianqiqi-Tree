@@ -23,7 +23,11 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.000002</h3><br>
 		- 新增了三个层<br>
 		- 可以攻击敌人<br>
-		- 设计层级排列<br>`
+		- 设计层级排列<br><br>
+	<h3>v0.000003</h3><br>
+		- 新增了一个时间层，对玩家无用处<br>
+		- 敌人会说话<br>
+		- 看着很离谱<br>`
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
@@ -56,7 +60,7 @@ function addedPlayerData() { return {
 // Display extra things at the top of the page
 var displayThings = [
 	function(){return "你有"+format(player.lq.points)+"炼气期层数"},
-	"当前版本终局：",
+	"当前版本终局：打败3个垃圾就会卡住，正常的。",
 ]
 
 // Determines when the game "ends"
