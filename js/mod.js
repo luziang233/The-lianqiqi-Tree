@@ -53,6 +53,7 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+	function(){return "你有"+format(player.lq.points)+"炼气期层数"},
 	"当前版本终局：",
 ]
 
