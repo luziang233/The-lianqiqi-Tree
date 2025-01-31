@@ -173,12 +173,18 @@ addLayer("dr", {
     infoboxes: {
         1: {
             title() {
-                let title1 = ["测试","测试第二句话","测试第三句话"]
-                return title1[player.dr.dr_num.sub(1)]
+                let title1 = ["测","测__","测","测试","测试__","测试","测试这","测试这__","测试这","测试这个","测试这个__","测试这个","测试这个效","测试这个效__","测试这个效",
+                    "测试这个效果","测试这个效果__","测试这个效果","测试这个效果真","测试这个效果真__","测试这个效果真","测试这个效果真不","测试这个效果真不__","测试这个效果真不",
+                    "测试这个效果真不错","测试这个效果真不错__","测试这个效果真不错"
+                ]
+                return title1[player.t.points.times(3).floor()]
             },
             body() { 
-                let body1 = ["测试","测试第二句话","测试第三句话"]
-                return body1[player.dr.dr_num.sub(1)]
+                let body1 = ["测","测__","测","测试","测试__","测试","测试这","测试这__","测试这","测试这个","测试这个__","测试这个","测试这个效","测试这个效__","测试这个效",
+                    "测试这个效果","测试这个效果__","测试这个效果","测试这个效果真","测试这个效果真__","测试这个效果真","测试这个效果真不","测试这个效果真不__","测试这个效果真不",
+                    "测试这个效果真不错","测试这个效果真不错__","测试这个效果真不错"
+                ]
+                return body1[player.t.points.times(3).floor()]
             },
         },
     },
@@ -228,6 +234,40 @@ addLayer("zj",{
     layerShown(){return true}
 })
 
+addLayer("t",{
+    name: "时间", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "时间", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position:999, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    displayRow:666,
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "white",
+    requires: new Decimal(0), // Can be a function that takes requirement increases into account
+    resource: "时间", // Name of prestige currency
+    baseResource: "不需要", // Name of resource prestige is based on
+    passiveGeneration(){return new Decimal(1)},
+    baseAmount() {return new Decimal(0)}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    update(diff){
+        if(player.t.points.gte(14)&&player.t.points.lte(10000)){
+            player.t.points = new Decimal(-0.4)
+        }
+    },
+    layerShown(){return true},
+    tabFormat: [
+        //["display-text",function() { return '你已经击杀了 ' + format(player[this.layer].points) + ' 个敌人!' }, { "color": "red", "font-size": "26px", "font-family": "Comic Sans MS" }],
+        ["display-text",function() { return player.t.points.times(2).floor() }, { "color": "red", "font-size": "26px", "font-family": "Comic Sans MS" }],
+    ],
+})
 
 
 /*以下是一些基本的decimal运算符
