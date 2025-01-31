@@ -13,15 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.000001",
+	num: "0.000002",
 	name: "无敌测试版",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
-
+	<h3>v0.000001</h3><br>
+		- 还在学习<br><br>
+	<h3>v0.000002</h3><br>
+		- 新增了三个层<br>
+		- 可以攻击敌人<br>
+		- 设计层级排列<br>`
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.

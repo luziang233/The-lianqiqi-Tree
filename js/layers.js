@@ -85,9 +85,13 @@ addLayer("dr", {
     startData() { return {
         unlocked: true,
 		points: new Decimal(1),
-        hp:new Decimal(1),
-        dr_num:new Decimal(1),
+        hp:new Decimal(1),//玩家自己的血量，目前没用
+        dr_num:new Decimal(1),//第几个敌人
     }},
+    //下面是重要的我定义的东西
+    damage: new Decimal(0),
+    
+
     color: "red",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "敌人", // Name of prestige currency
@@ -111,12 +115,14 @@ addLayer("dr", {
     clickables: {
         11: {
             title:"普通的一拳",
-            tooltip:"造成伤害",
-            onClick(){
-                tmp.dr.damage.wj_damage.dam=tmp.dr.enemies[player.dr.dr_num].hp.div(10)
+            tooltip(){return "造成"+format(tmp.dr.enemies[player.dr.dr_num].hp.div(10))+"伤害"},
+            canClick(){
+                return tmp.dr.enemies[player.dr.dr_num].hp.sub(tmp.dr.damage).gt(0)
             },
-            effect(){return 1},
-            display() {return "伤害 "+format(clickableEffect("dr", 11))},
+            onClick(){
+                tmp.dr.damage=tmp.dr.enemies[player.dr.dr_num].hp.div(10).add(tmp.dr.damage)
+            },
+            display(){return "伤害 " + format(clickableEffect("dr", 11)) },
         }
     },
     milestones: {
@@ -134,32 +140,62 @@ addLayer("dr", {
                 "background-color": "#dc143c",
             },
             progress() {
-                return tmp.dr.damage.wj_damage.dam.div(tmp.dr.enemies[player.dr.dr_num].hp)
+                return tmp.dr.damage.div(tmp.dr.enemies[player.dr.dr_num].hp)
             },
             display() {
-                return tmp.dr.enemies[player.dr.dr_num].name+"还有 " + format(tmp.dr.enemies[player.dr.dr_num].hp.sub((tmp.dr.damage.wj_damage.dam))) + "/" + format(tmp.dr.enemies[player.dr.dr_num].hp) + " 血量";
+                return tmp.dr.enemies[player.dr.dr_num].name + "还有 " + format(tmp.dr.enemies[player.dr.dr_num].hp.sub(tmp.dr.damage)) + "/" + format(tmp.dr.enemies[player.dr.dr_num].hp) + " 血量";
             },
-        },
-    },
-    damage:{
-        wj_damage:{
-            dam(){return new Decimal(0) },
         },
     },
     enemies:{
         1:{
             name:"小垃圾",
             hp(){return new Decimal(10) },
+            live(){
+                return this.hp().gte(0)
+            },
+        },
+        2:{
+            name:"大垃圾",
+            hp(){return new Decimal(1e5) },
+            live(){
+                return this.hp().gte(0)
+            },
+        },
+        3:{
+            name:"测试更大的垃圾",
+            hp(){return new Decimal(1e15) },
+            live(){
+                return this.hp().gte(0)
+            },
+        },
+    },
+    infoboxes: {
+        1: {
+            title() {
+                let title1 = ["测试","测试第二句话","测试第三句话"]
+                return title1[player.dr.dr_num.sub(1)]
+            },
+            body() { 
+                let body1 = ["测试","测试第二句话","测试第三句话"]
+                return body1[player.dr.dr_num.sub(1)]
+            },
         },
     },
     update(diff){
-        
+        if(tmp.dr.enemies[player.dr.dr_num].hp.sub(tmp.dr.damage).lte(0)) {
+            player.dr.dr_num=player.dr.dr_num.add(1),
+            tmp.dr.damage=new Decimal(0)
+        }
     },
     tabFormat: [
-        ["display-text",function() { return '你已经击杀了 ' + format(player[this.layer].points) + ' 个敌人!' }, { "color": "red", "font-size": "26px", "font-family": "Comic Sans MS" }],
-        ["blank","30px"],
+        //["display-text",function() { return '你已经击杀了 ' + format(player[this.layer].points) + ' 个敌人!' }, { "color": "red", "font-size": "26px", "font-family": "Comic Sans MS" }],
+        ["display-text",function() { return tmp.dr.enemies[player.dr.dr_num].name }, { "color": "red", "font-size": "26px", "font-family": "Comic Sans MS" }],
+        ["blank","15px"],
         ["row", [["bar", "bigBar"]]],
-        ["blank","300px"],
+        ["blank","15px"],
+        ["row", [["infobox","1"]]],
+        ["blank","275px"],
         "clickables",
         
     ],
@@ -191,3 +227,20 @@ addLayer("zj",{
     tooltipLocked(){return "需要10层炼气期来突破"},
     layerShown(){return true}
 })
+
+
+
+/*以下是一些基本的decimal运算符
+new Decimal(x) 声明一个decimal数x
+x.add(y) 返回两个decimal数x,y相加的值
+x.sub(y) 返回两个decimal数x,y相减的值
+x.times(y) 返回两个decimal数x,y相乘的值
+x.div(y) 返回两个decimal数x,y相除的值(y不为0)
+x.sqrt() x开平方根
+x.cbrt() x开立方根
+x.ln() x取e为底的对数值
+x.log10() x取以10为底的对数值
+x.pow(y) x变为y次方
+x.max(y) 取x和y的最大值
+x.min(y) 取x和y的最小值
+x.tetrate(y) x变为y的重幂*/
