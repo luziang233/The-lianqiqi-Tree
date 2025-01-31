@@ -110,7 +110,13 @@ addLayer("dr", {
     },
     clickables: {
         11: {
-            display() {return "普通的一拳"},
+            title:"普通的一拳",
+            tooltip:"造成伤害",
+            onClick(){
+                tmp.dr.damage.wj_damage.dam=tmp.dr.enemies[player.dr.dr_num].hp.div(10)
+            },
+            effect(){return 1},
+            display() {return "伤害 "+format(clickableEffect("dr", 11))},
         }
     },
     milestones: {
