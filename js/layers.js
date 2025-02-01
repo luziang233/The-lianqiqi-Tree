@@ -92,6 +92,7 @@ addLayer("dr", {
     damage: new Decimal(0),
     hurt: new Decimal(1),
     dead: new Decimal(1),
+    stay: true,
 
     color: "red",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -153,87 +154,101 @@ addLayer("dr", {
         1:{
             name:"小垃圾",
             hp(){return new Decimal(10) },
-            live(){
-                return this.hp().gte(0)
-            },
         },
         2:{
             name:"大垃圾",
             hp(){return new Decimal(1e5) },
-            live(){
-                return this.hp().gte(0)
-            },
         },
         3:{
             name:"测试更大的垃圾",
             hp(){return new Decimal(1e15) },
-            live(){
-                return this.hp().gte(0)
-            },
+        },
+        4:{
+            name:"无辜的小女孩",
+            hp(){return new Decimal(1) },
+        },
+        5:{
+            name:"小垃圾",
+            hp(){return new Decimal(10) },
         },
     },
     infoboxes: {
         1: {
             title() {
-                let title1 = [
-                    "",
-                    "____",
-                    "你为",
-                    "你为____",
-                    "你为",
-                    "你为什么",
-                    "你为什么____",
-                    "你为什么",
-                    "你为什么要打",
-                    "你为什么要打____",
-                    "你为什么要打",
-                    "你为什么要打我？",
-                    "你为什么要打我？____",
-                    "你为什么要打我？",
-                    "你为什么要打我？你真",
-                    "你为什么要打我？你真____",
-                    "你为什么要打我？你真",
-                    "你为什么要打我？你真的忍",
-                    "你为什么要打我？你真的忍____",
-                    "你为什么要打我？你真的忍",
-                    "你为什么要打我？你真的忍心做",
-                    "你为什么要打我？你真的忍心做____",
-                    "你为什么要打我？你真的忍心做",
-                    "你为什么要打我？你真的忍心做这种",
-                    "你为什么要打我？你真的忍心做这种____",
-                    "你为什么要打我？你真的忍心做这种",
-                    "你为什么要打我？你真的忍心做这种事吗",
-                    "你为什么要打我？你真的忍心做这种事吗____",
-                    "你为什么要打我？你真的忍心做这种事吗",
-                    "你为什么要打我？你真的忍心做这种事吗？",
-                    "你为什么要打我？你真的忍心做这种事吗？____",
-                    "你为什么要打我？你真的忍心做这种事吗？"
-                  ]
-                let length1=title1.lenth
-                
-                //下面是原来能运行的,t是一个层级，我拿来当时间用，t的point每秒加一
-               /* if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
-                    return "文本框"
-                }else{
-                    return title1[player.t.points.times(6).floor()]
-                }*/
-                
-                //下面是运行不了的
-                 if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
-                    return "文本框"
+                let str = "你为什么要打我？我做错了什么吗？",str1 = "对话"
+                /*if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)||player.dr.dr_num.neq(4)){
+                    return "文本框"*/
+                if(player.dr.dr_num.eq(4)){
+                    if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
+                        return "对话"
+                    }else if(player.t.points.times(4).floor().lte(str.length-1)){
+                        return getSplitString(str,player.t.points.times(8).floor())
+                    }
+                    return str
+                }else if(player.dr.dr_num.eq(1)){
+                    return str1
+                }else if(player.dr.dr_num.eq(2)){
+                    return str1
+                }else if(player.dr.dr_num.eq(3)){
+                    return str1
+                }else if(player.dr.dr_num.eq(5)){
+                    return str1
                 }
-                if((player.t.points.times(6).floor()).lte(title1.length-1)){
-                    return title1[player.t.points.times(6).floor()]
-                }else{
-                    return title1[title1.length-1]
-                } 
             },
-            body() { 
-                  if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
-                    return "文本框"
-                }else{
-                    return getSplitString("你为什么要打我？你真的忍心做这种事吗？",player.t.points.times(12).floor())
-                    //return body1[player.t.points.times(12).floor()]
+            body() {
+                let hp_percent = tmp.dr.enemies[player.dr.dr_num].hp.sub(tmp.dr.damage).div(tmp.dr.enemies[player.dr.dr_num].hp)
+                let str = "你为什么要打我？我做错了什么吗？",str1 = "你这个炼气期的也敢在这里造次？",str2 = "噢哟你打人还挺痛~",str3 = "等等不对劲！",str4 = "别打了！我错了！我真知道错了！"
+                if(player.dr.dr_num.eq(4)){
+                    if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
+                        return "她没有说话，只是看着你"
+                    }else if(player.t.points.times(4).floor().lte(str.length-1)){
+                        return getSplitString(str,player.t.points.times(8).floor())
+                    }
+                    return str
+                }else if(player.dr.dr_num.eq(1)){
+                    if(hp_percent.lte(0.7)){
+                        if(hp_percent.lte(0.4)){
+                            if(hp_percent.lte(0.2)){
+                                return str4
+                            }
+                            return str3
+                        }
+                        return str2
+                    }
+                    return str1
+                }else if(player.dr.dr_num.eq(2)){
+                    if(hp_percent.lte(0.7)){
+                        if(hp_percent.lte(0.4)){
+                            if(hp_percent.lte(0.2)){
+                                return str4
+                            }
+                            return str3
+                        }
+                        return str2
+                    }
+                    return str1
+                }else if(player.dr.dr_num.eq(3)){
+                    if(hp_percent.lte(0.7)){
+                        if(hp_percent.lte(0.4)){
+                            if(hp_percent.lte(0.2)){
+                                return str4
+                            }
+                            return str3
+                        }
+                        return str2
+                    }
+                    return str1
+                }else if(player.dr.dr_num.eq(5)){
+                    if(hp_percent.lte(0.7)){
+                        if(hp_percent.lte(0.4)){
+                            if(hp_percent.lte(0.2)){
+                                return str4
+                            }
+                            return str3
+                        }
+                        return str2
+                    }
+                    return str1
                 }
             },
         },
@@ -313,7 +328,7 @@ addLayer("t",{
         return new Decimal(1)
     },
     update(diff){
-        if((player.t.points.gte(10)&&player.t.points.lte(10000))||tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0) ){
+        if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0) ){
             player.t.points = new Decimal(0)
         }
     },
@@ -324,7 +339,7 @@ addLayer("t",{
     ],
 })
 //感谢 ⁰¹⁰⁰⁰⁰⁰⁰⁰⁰ᵃ⁷ 大佬写的函数
-function getSplitString(t,n){let o=n%3;return t.substr(0,Math.floor(n/3))+(2==o?"":1==o?"__":"  ")}
+const getSplitString=(s,p)=>s.slice(0,p/2|0)+[' ','__'][p%2]
 
 /*以下是一些基本的decimal运算符
 new Decimal(x) 声明一个decimal数x
