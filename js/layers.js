@@ -212,21 +212,21 @@ addLayer("dr", {
                 let length1=title1.lenth
                 
                 //下面是原来能运行的,t是一个层级，我拿来当时间用，t的point每秒加一
-                if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
+               /* if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
                     return "文本框"
                 }else{
                     return title1[player.t.points.times(6).floor()]
-                }
+                }*/
                 
                 //下面是运行不了的
-                /* if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
+                 if(tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0)){
                     return "文本框"
                 }
-                if((player.t.points.times(6).floor()).lte(title1.length.sub(1))){
+                if((player.t.points.times(6).floor()).lte(title1.length-1)){
                     return title1[player.t.points.times(6).floor()]
                 }else{
-                    return title1[title1.length.sub(1)]
-                } */
+                    return title1[title1.length-1]
+                } 
             },
             body() { 
                 let body1 = [
@@ -374,7 +374,7 @@ addLayer("t",{
         return new Decimal(1)
     },
     update(diff){
-        if((player.t.points.gte(5)&&player.t.points.lte(10000))||tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0) ){
+        if((player.t.points.gte(10)&&player.t.points.lte(10000))||tmp.dr.hurt.eq(1)||tmp.dr.dead.eq(0) ){
             player.t.points = new Decimal(0)
         }
     },
