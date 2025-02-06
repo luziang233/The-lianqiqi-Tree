@@ -30,13 +30,13 @@ addLayer("lq", {
     ],
     upgrades: {
         11: {
-            title: "什么，已经十万层了？",
-            description: "开始无敌之路",
+            title: "",
+            description: "",
             cost: new Decimal(0),
         },
         12: {
-            title: "接下来干点啥好呢?",
-            description: "没有对手啊",
+            title: "",
+            description: "",
             cost: new Decimal(2e5),
             effect() {
                 return player[this.layer].points.add(1).pow(0.5)
@@ -55,9 +55,59 @@ addLayer("lq", {
     },
     milestones: {
         0: {
-            requirementDescription: "炼气期三十万层",
-            done() { return player[this.layer].points.gte(3e5)},
+            requirementDescription: "炼气期一层",
+            done() { return player[this.layer].points.gte(1)},
             effectDescription:"灵气获得X2",
+        },
+        1: {
+            requirementDescription: "炼气期二层",
+            done() { return player[this.layer].points.gte(2)},
+            effectDescription:"",
+        },
+        2: {
+            requirementDescription: "炼气期三层",
+            done() { return player[this.layer].points.gte(3)},
+            effectDescription:"",
+        },
+        3: {
+            requirementDescription: "炼气期四层",
+            done() { return player[this.layer].points.gte(4)},
+            effectDescription:"",
+        },
+        4: {
+            requirementDescription: "炼气期五层",
+            done() { return player[this.layer].points.gte(5)},
+            effectDescription:"灵气获得X2",
+        },
+        5: {
+            requirementDescription: "炼气期六层",
+            done() { return player[this.layer].points.gte(6)},
+            effectDescription:"灵气获得X2",
+        },
+        6: {
+            requirementDescription: "炼气期七层",
+            done() { return player[this.layer].points.gte(7)},
+            effectDescription:"灵气获得X2",
+        },
+        7: {
+            requirementDescription: "炼气期八层",
+            done() { return player[this.layer].points.gte(8)},
+            effectDescription:"灵气获得X2",
+        },
+        8: {
+            requirementDescription: "炼气期九层",
+            done() { return player[this.layer].points.gte(9)},
+            effectDescription:"灵气获得X2",
+        },
+        9: {
+            requirementDescription: "炼气期十层",
+            done() { return player[this.layer].points.gte(10)},
+            effectDescription:"灵气获得X2",
+        },
+        10: {
+            requirementDescription: "炼气期十一层？",
+            done() { return player[this.layer].points.gte(1)},
+            effectDescription:"测试",
         },
     },
     update(diff){
